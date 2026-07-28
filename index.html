@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Construction Defect Inspection — ระบบตรวจสอบดีเฟกงานก่อสร้าง</title>
+    <meta property="og:title" content="Construction Defect — ระบบตรวจสอบดีเฟกงานก่อสร้าง">
+    <meta property="og:description" content="บันทึกและตรวจสอบดีเฟกงานก่อสร้าง พร้อมแนบรูปถ่ายหน้างาน">
+    <meta property="og:type" content="website">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Sarabun', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen pb-20">
+
+    <div class="max-w-md mx-auto bg-white min-h-screen shadow-xl flex flex-col justify-between relative pb-16">
+        
+        <div>
+            <!-- Header Bar -->
+            <div class="px-4 py-3 border-b border-slate-100 flex justify-between items-center bg-white sticky top-0 z-10">
+                <div>
+                    <h1 class="font-bold text-slate-900 text-lg">Defect Inspection</h1>
+                    <p class="text-xs text-slate-500">ระบบตรวจสอบข้อบกพร่องงานก่อสร้าง</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="bg-slate-100 px-2.5 py-1 rounded-lg text-xs font-medium text-slate-700 flex items-center gap-1">
+                        <span>📅</span> <span id="current-date">--/--/--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Greeting Banner -->
+            <div class="p-4">
+                <div class="bg-amber-50 border border-amber-200/60 rounded-2xl p-4 flex items-start gap-3">
+                    <div class="text-2xl">📸</div>
+                    <div>
+                        <h2 class="font-bold text-amber-900 text-sm">บันทึกดีเฟก & แนบรูปถ่าย</h2>
+                        <p class="text-xs text-amber-700 mt-0.5">ถ่ายรูปหน้างานและระบุรายละเอียดเพื่อแจ้งแก้ไข</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ข้อมูลโครงการ -->
+            <div class="px-4 mb-4">
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 space-y-3 text-xs">
+                    <h3 class="font-bold text-slate-800 border-b border-slate-200 pb-1.5 flex items-center gap-1.5">
+                        <span>🏗️</span> ข้อมูลโครงการและสถานที่
+                    </h3>
+                    <div>
+                        <label class="font-semibold text-slate-600 block mb-1">ชื่อโครงการ:</label>
+                        <input type="text" id="proj-name" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-slate-800 font-medium focus:outline-none focus:border-blue-500" value="บ้านพักอาศัย ค.ส.ล. 1 ชั้น">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="font-semibold text-slate-600 block mb-1">เลขที่อาคาร / แปลง:</label>
+                            <input type="text" id="proj-building" placeholder="เช่น อาคาร A" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="font-semibold text-slate-600 block mb-1">ผู้ตรวจสอบ:</label>
+                            <input type="text" id="proj-inspector" placeholder="ชื่อผู้ตรวจ" class="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:border-blue-500">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- รายการดีเฟกพร้อมแนบรูป -->
+            <div class="px-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-slate-800 text-sm flex items-center gap-1.5">
+                        <span>📝</span> รายการข้อบกพร่อง (Defects)
+                    </h3>
+                    <button onclick="addCard()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-semibold shadow-sm transition flex items-center gap-1">
+                        <span>➕</span> เพิ่มดีเฟก
+                    </button>
+                </div>
+
+                <div id="defect-cards-container" class="space-y-4">
+                    <!-- การ์ดรายการที่ 1 -->
+                    <div class="defect-card bg-white border border-slate-200 shadow-sm rounded-2xl p-3.5 space-y-2.5 text-xs relative">
+                        <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+                            <span class="font-bold text-blue-600 item-number">รายการที่ #1</span>
+                            <button onclick="removeCard(this)" class="text-red-500 hover:bg-red-50 px-2 py-0.5 rounded-lg font-semibold transition">✕ ลบ</button>
+                        </div>
+                        <div>
+                            <label class="font-semibold text-slate-600 block mb-1">หมวดหมู่:</label>
+                            <select class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-medium focus:outline-none">
+                                <option>งานโครงสร้าง / ผนัง</option>
+                                <option>งานระบบไฟฟ้า</option>
+                                <option>งานระบบประปา / สุขาภิบาล</option>
+                                <option>งานพื้น / ปูกระเบื้อง</option>
+                                <option>งานประตู / หน้าต่าง</option>
+                                <option>งานสี / ความเรียบร้อยผิว</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="font-semibold text-slate-600 block mb-1">รายละเอียดดีเฟก:</label>
+                            <input type="text" placeholder="เช่น ผนังร้าว, สีด่าง, ท่อรั่ว" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="font-semibold text-slate-600 block mb-1">กำหนดเสร็จ:</label>
+                                <input type="date" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-slate-800 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="font-semibold text-slate-600 block mb-1">สถานะ:</label>
+                                <select class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 font-bold text-amber-600 focus:outline-none" onchange="updateCardColor(this)">
+                                    <option value="pending" class="text-amber-600" selected>⏳ รอแก้ไข</option>
+                                    <option value="fixed" class="text-blue-600">🔧 แก้ไขแล้ว</option>
+                                    <option value="passed" class="text-emerald-600">✅ ผ่านตรวจ</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- ส่วนแนบรูปถ่าย -->
+                        <div class="pt-1">
+                            <label class="font-semibold text-slate-600 block mb-1">📷 รูปถ่ายประกอบดีเฟก:</label>
+                            <div class="flex items-center gap-3">
+                                <label class="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 border border-slate-200">
+                                    <span>📸 ถ่ายรูป / อัปโหลด</span>
+                                    <input type="file" accept="image/*" class="hidden" onchange="previewImage(event)">
+                                </label>
+                                <span class="text-slate-400 text-[11px] file-name-label">ยังไม่ได้เลือกรูป</span>
+                            </div>
+                            <div class="image-preview-container mt-2 hidden">
+                                <img src="" class="w-full h-36 object-cover rounded-xl border border-slate-200">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-slate-200 py-2.5 px-4 flex justify-around items-center z-20 shadow-lg">
+            <button class="flex flex-col items-center text-blue-600">
+                <span class="text-lg">🏠</span>
+                <span class="text-[10px] font-bold mt-0.5">หน้าหลัก</span>
+            </button>
+            <button onclick="addCard()" class="flex flex-col items-center text-slate-400 hover:text-slate-600">
+                <span class="text-lg">📋</span>
+                <span class="text-[10px] font-medium mt-0.5">เพิ่มดีเฟก</span>
+            </button>
+            <button onclick="window.print()" class="flex flex-col items-center text-slate-400 hover:text-slate-600">
+                <span class="text-lg">🖨️</span>
+                <span class="text-[10px] font-medium mt-0.5">พิมพ์ PDF</span>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        const options = { day: 'numeric', month: 'numeric', year: '2-digit' };
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('th-TH', options);
+
+        function addCard() {
+            const container = document.getElementById('defect-cards-container');
+            const count = container.querySelectorAll('.defect-card').length + 1;
+            
+            const card = document.createElement('div');
+            card.className = "defect-card bg-white border border-slate-200 shadow-sm rounded-2xl p-3.5 space-y-2.5 text-xs relative";
+            card.innerHTML = `
+                <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+                    <span class="font-bold text-blue-600 item-number">รายการที่ #${count}</span>
+                    <button onclick="removeCard(this)" class="text-red-500 hover:bg-red-50 px-2 py-0.5 rounded-lg font-semibold transition">✕ ลบ</button>
+                </div>
+                <div>
+                    <label class="font-semibold text-slate-600 block mb-1">หมวดหมู่:</label>
+                    <select class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 font-medium focus:outline-none">
+                        <option>งานโครงสร้าง / ผนัง</option>
+                        <option>งานระบบไฟฟ้า</option>
+                        <option>งานระบบประปา / สุขาภิบาล</option>
+                        <option>งานพื้น / ปูกระเบื้อง</option>
+                        <option>งานประตู / หน้าต่าง</option>
+                        <option>งานสี / ความเรียบร้อยผิว</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="font-semibold text-slate-600 block mb-1">รายละเอียดดีเฟก:</label>
+                    <input type="text" placeholder="เช่น ผนังร้าว, สีด่าง, ท่อรั่ว" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="font-semibold text-slate-600 block mb-1">กำหนดเสร็จ:</label>
+                        <input type="date" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-slate-800 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="font-semibold text-slate-600 block mb-1">สถานะ:</label>
+                        <select class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 font-bold text-amber-600 focus:outline-none" onchange="updateCardColor(this)">
+                            <option value="pending" class="text-amber-600" selected>⏳ รอแก้ไข</option>
+                            <option value="fixed" class="text-blue-600">🔧 แก้ไขแล้ว</option>
+                            <option value="passed" class="text-emerald-600">✅ ผ่านตรวจ</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <label class="font-semibold text-slate-600 block mb-1">📷 รูปถ่ายประกอบดีเฟก:</label>
+                    <div class="flex items-center gap-3">
+                        <label class="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 border border-slate-200">
+                            <span>📸 ถ่ายรูป / อัปโหลด</span>
+                            <input type="file" accept="image/*" class="hidden" onchange="previewImage(event)">
+                        </label>
+                        <span class="text-slate-400 text-[11px] file-name-label">ยังไม่ได้เลือกรูป</span>
+                    </div>
+                    <div class="image-preview-container mt-2 hidden">
+                        <img src="" class="w-full h-36 object-cover rounded-xl border border-slate-200">
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        }
+
+        function removeCard(btn) {
+            btn.closest('.defect-card').remove();
+            document.querySelectorAll('.defect-card').forEach((card, index) => {
+                card.querySelector('.item-number').textContent = `รายการที่ #${index + 1}`;
+            });
+        }
+
+        function updateCardColor(select) {
+            select.className = "w-full bg-slate-50 border border-slate-200 rounded-xl p-2 font-bold focus:outline-none ";
+            if (select.value === 'pending') select.classList.add('text-amber-600');
+            else if (select.value === 'fixed') select.classList.add('text-blue-600');
+            else if (select.value === 'passed') select.classList.add('text-emerald-600');
+        }
+
+        function previewImage(event) {
+            const input = event.target;
+            const card = input.closest('.defect-card');
+            const previewContainer = card.querySelector('.image-preview-container');
+            const previewImg = previewContainer.querySelector('img');
+            const nameLabel = card.querySelector('.file-name-label');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewContainer.classList.remove('hidden');
+                    nameLabel.textContent = input.files[0].name;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>

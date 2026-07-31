@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบฟอร์มตรวจสอบเหล็กฐานรากก่อนเทคอนกรีต</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 25px;
+        }
+        .section-title {
+            background-color: #34495e;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        .form-group input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+            font-size: 0.95em;
+        }
+        th {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+        }
+        .text-center { text-align: center; }
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1em;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #219653;
+        }
+        @media print {
+            body { background: #fff; padding: 0; }
+            .container { box-shadow: none; padding: 0; }
+            button { display: none; }
+            input, textarea { border: none; border-bottom: 1px solid #000; background: transparent; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>แบบฟอร์มตรวจสอบเหล็กเสริมฐานราก</h1>
+    <div class="subtitle">Inspection Checklist: Footing & Rebar Before Concreting</div>
+
+    <!-- ส่วนข้อมูลโครงการ -->
+    <div class="section-title">1. ข้อมูลทั่วไปโครงการ</div>
+    <div class="form-grid" style="margin-top: 15px;">
+        <div class="form-group">
+            <label>ชื่อโครงการ:</label>
+            <input type="text" id="projectName" value="บ้านพักอาศัย 1 ชั้น (เกาะสมุย)">
+        </div>
+        <div class="form-group">
+            <label>ตำแหน่งฐานรากที่ตรวจ (เช่น F1, F2):</label>
+            <input type="text" id="footingNo" placeholder="ระบุเลขที่ฐานราก เช่น F1 (ชุดที่ 1-4)">
+        </div>
+        <div class="form-group">
+            <label>วันที่ตรวจสอบ:</label>
+            <input type="date" id="inspectDate">
+        </div>
+        <div class="form-group">
+            <label>ผู้ตรวจสอบ (Inspector):</label>
+            <input type="text" id="inspector" placeholder="ชื่อวิศวกร / โฟร์แมนผู้ตรวจ">
+        </div>
+    </div>
+
+    <!-- รายการตรวจสอบ -->
+    <div class="section-title">2. รายการตรวจสอบทางวิศวกรรม (Checklist)</div>
+    <table>
+        <thead>
+            <tr>
+                <th width="60%" class="text-center">หัวข้อการตรวจสอบ</th>
+                <th width="15%" class="text-center">ผ่าน (Pass)</th>
+                <th width="15%" class="text-center">ไม่ผ่าน (Fail)</th>
+                <th width="10%" class="text-center">N/A</th>
+            </tr>
+        </thead>
+        <tbody id="checklistBody">
+            <!-- สร้างผ่าน JS -->
+        </tbody>
+    </table>
+
+    <!-- ส่วนความคิดเห็นและรูปถ่าย -->
+    <div class="section-title">3. ข้อเสนอแนะ / ข้อบกพร่องที่ต้องแก้ไข (ถ้ามี)</div>
+    <div style="margin-top: 15px;">
+        <textarea id="comments" placeholder="ระบุรายละเอียดสิ่งที่ต้องแก้ไข หรือหมายเหตุเพิ่มเติม..."></textarea>
+    </div>
+
+    <!-- ผลการอนุมัติ -->
+    <div class="section-title">4. ผลการตรวจสอบ</div>
+    <div style="margin-top: 15px; padding: 15px; background: #f9f9f9; border-radius: 4px; display: flex; gap: 30px; align-items: center;">
+        <label><input type="radio" name="result" value="approved" checked> <strong>อนุมัติให้เทคอนกรีตได้ (Approved)</strong></label>
+        <label><input type="radio" name="result" value="rejected"> <strong>ไม่อนุมัติ ให้แก้ไขก่อนเทคอนกรีต (Rejected / Resubmit)</strong></label>
+    </div>
+
+    <!-- ปุ่มพิมพ์เอกสาร -->
+    <div class="btn-container">
+        <button onclick="window.print()">พิมพ์รายงาน / บันทึกเป็น PDF</button>
+    </div>
+</div>
+
+<script>
+    // ตั้งค่าวันที่ปัจจุบันให้ช่องวันที่อัตโนมัติ
+    document.getElementById('inspectDate').valueAsDate = new Date();
+
+    // รายการหัวข้อตรวจสอบมาตรฐานงานฐานราก
+    const checkItems = [
+        "1. ขนาดหลุมฐานราก ความลึก และระดับความสูงคอนกรีตหยาบ (Blind/Lean Concrete) ถูกต้องตามแบบแปลน",
+        "2. ขนาด ชนิด และจำนวนเส้นเหล็กเสริมฐานราก (ตะแกรงบน-ล่าง) ตรงตามแบบโครงสร้าง",
+        "3. ระยะทาบเหล็กเดือยเสา (Dowel Bar) และตำแหน่งศูนย์กลาง (Center) ถูกต้องไม่คลาดเคลื่อน",
+        "4. การผูกมัดลวดเหล็กแน่นหนา ไม่หลวม และสะอาดปราศจากสนิมขุม น้ำมัน หรือดินโคลน",
+        "5. การหนุนลูกปูน (Concrete Spacer) ระยะห่างเพียงพอเพื่อให้ได้ระยะหุ้มคอนกรีต (Cover) ตามกำหนด (อย่างน้อย 5-7.5 ซม. สำหรับงานฐานราก)",
+        "6. ความสะอาดภายในหลุมฐานราก (ไม่มีน้ำขัง ขยะ หรือเศษไม้แบบหลงเหลือ)"
+    ];
+
+    const tbody = document.getElementById('checklistBody');
+    checkItems.forEach((item, index) => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${item}</td>
+                <td class="text-center"><input type="radio" name="check_${index}" value="Pass" checked></td>
+                <td class="text-center"><input type="radio" name="check_${index}" value="Fail"></td>
+                <td class="text-center"><input type="radio" name="check_${index}" value="NA"></td>
+            </tr>
+        `;
+    });
+</script>
+
+</body>
+</html>
